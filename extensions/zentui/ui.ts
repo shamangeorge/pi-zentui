@@ -144,30 +144,13 @@ function isHorizontalBorder(line: string): boolean {
 	return plain.length > 0 && /^─+$/.test(plain);
 }
 
-function renderedContainsModelMeta(
-	lines: string[],
-	modelMeta: EditorMeta,
-	thinkingLevel: string | undefined,
-): boolean {
-	const required = [modelMeta.modelLabel, modelMeta.providerLabel].filter(Boolean);
-	if (thinkingLevel && thinkingLevel !== "off") required.push(thinkingLevel);
-	return lines.some((line) => {
-		const plain = plainRenderedText(line);
-		return required.every((part) => plain.includes(part));
-	});
+function isRenderedModelMetaLine(line: string, modelMeta: EditorMeta): boolean {
+	const plain = plainRenderedText(line);
+	return plain.includes(modelMeta.modelLabel) && plain.includes(modelMeta.providerLabel);
 }
 
-function isAlreadyPolishedFrame(
-	lines: string[],
-	modelMeta: EditorMeta,
-	thinkingLevel: string | undefined,
-): boolean {
-	return (
-		lines.length >= 3 &&
-		isHorizontalBorder(lines[0] ?? "") &&
-		isHorizontalBorder(lines.at(-1) ?? "") &&
-		renderedContainsModelMeta(lines.slice(1, -1), modelMeta, thinkingLevel)
-	);
+function removeRenderedModelMetaLines(lines: string[], modelMeta: EditorMeta): string[] {
+	return lines.filter((line) => !isRenderedModelMetaLine(line, modelMeta));
 }
 
 function vimModeColor(mode: string): string {
@@ -233,13 +216,9 @@ function renderPolishedFrame({
 		autocompleteCount > 0 && autocompleteCount < baseRendered.length
 			? baseRendered.slice(-autocompleteCount)
 			: [];
-	if (isAlreadyPolishedFrame(editorFrame, modelMeta, thinkingLevel)) {
-		return clampRenderedLines([...editorFrame, ...autocompleteLines], width);
-	}
-
 	if (editorFrame.length < 2) return clampRenderedLines(baseRendered, width);
 
-	const editorLines = editorFrame.slice(1, -1);
+	const editorLines = removeRenderedModelMetaLines(editorFrame.slice(1, -1), modelMeta);
 	const model = renderStyleForSourceOrFallback(
 		uiTheme,
 		colorSource,

@@ -1224,7 +1224,7 @@ describe("Pi docs compliance", () => {
 	it("does not add another model line when wrapping an editor that already includes Zentui chrome", () => {
 		const meta = "[accent]claude-sonnet  [text]Anthropic  [muted]medium";
 		const base = {
-			render: (width: number) => ["─".repeat(width), "", meta, "─".repeat(width)],
+			render: (width: number) => ["─".repeat(width), "", meta, meta, "─".repeat(width)],
 			invalidate() {},
 			handleInput() {},
 			getText: () => "",
@@ -1243,6 +1243,65 @@ describe("Pi docs compliance", () => {
 		expect(rendered.match(/claude-sonnet/g)).toHaveLength(1);
 		expect(rendered.match(/Anthropic/g)).toHaveLength(1);
 		expect(rendered.match(/medium/g)).toHaveLength(1);
+	});
+
+	it("collapses accumulated model and vim status lines from a nested polished editor", () => {
+		const staleMeta = "claude-sonnet  Anthropic  xhigh                               INSERT";
+		const base = {
+			render: (width: number) => [
+				"─".repeat(width),
+				"",
+				staleMeta,
+				staleMeta,
+				staleMeta,
+				"─".repeat(width),
+			],
+			invalidate() {},
+			handleInput() {},
+			getText: () => "",
+			setText() {},
+			getMode: () => "insert",
+		};
+		const editor = new WrappedPolishedEditor(
+			base,
+			makeTaggedTheme(),
+			() => defaultConfig,
+			() => ({ modelLabel: "claude-sonnet", providerLabel: "Anthropic" }),
+			() => "xhigh",
+		);
+
+		const rendered = editor.render(120).join("\n");
+
+		expect(rendered.match(/claude-sonnet/g)).toHaveLength(1);
+		expect(rendered.match(/Anthropic/g)).toHaveLength(1);
+		expect(rendered.match(/xhigh/g)).toHaveLength(1);
+		expect(rendered.match(/INSERT/g)).toHaveLength(1);
+	});
+
+	it("replaces nested model lines with the current model and vim status line", () => {
+		const staleMeta = "claude-sonnet  Anthropic  xhigh                               INSERT";
+		const base = {
+			render: () => ["not a plain border", staleMeta, "not a plain border"],
+			invalidate() {},
+			handleInput() {},
+			getText: () => "",
+			setText() {},
+			getMode: () => "insert",
+		};
+		const editor = new WrappedPolishedEditor(
+			base,
+			makeTaggedTheme(),
+			() => defaultConfig,
+			() => ({ modelLabel: "claude-sonnet", providerLabel: "Anthropic" }),
+			() => "xhigh",
+		);
+
+		const rendered = editor.render(120).join("\n");
+
+		expect(rendered.match(/claude-sonnet/g)).toHaveLength(1);
+		expect(rendered.match(/Anthropic/g)).toHaveLength(1);
+		expect(rendered.match(/xhigh/g)).toHaveLength(1);
+		expect(rendered.match(/INSERT/g)).toHaveLength(1);
 	});
 
 	it("proxies mutable editor callbacks and app-action state to the wrapped editor", () => {
