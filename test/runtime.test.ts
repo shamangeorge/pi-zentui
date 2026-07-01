@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { detectRuntime, runtimeMetadata } from "../extensions/zentui/runtime";
+import { detectRuntime, runtimeMetadata } from "../extensions/pi-zentui/runtime";
 
 function starshipRuntimeModules(): string[] {
 	const toml = readFileSync("test/fixtures/starship-nerd-font-symbols.toml", "utf8");

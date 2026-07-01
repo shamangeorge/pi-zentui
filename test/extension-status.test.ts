@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { type PolishedTuiConfig, defaultConfig } from "../extensions/zentui/config";
+import { type PolishedTuiConfig, defaultConfig } from "../extensions/pi-zentui/config";
 import {
 	collectExtensionStatusSegments,
 	sanitizeExtensionStatusOriginalText,
 	sanitizeExtensionStatusText,
-} from "../extensions/zentui/extension-status";
+} from "../extensions/pi-zentui/extension-status";
 
 function configWithExtensionStatuses(
 	extensionStatuses: Partial<PolishedTuiConfig["extensionStatuses"]>,

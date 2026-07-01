@@ -10,14 +10,14 @@ import {
 	saveExtensionStatusPlacement,
 	saveFooterSegmentsPatch,
 	saveUiFeaturesPatch,
-} from "../extensions/zentui/config";
+} from "../extensions/pi-zentui/config";
 import {
 	colorize,
 	renderChromeBorder,
 	renderStyle,
 	renderStyleForSource,
 	renderTerminalStyle,
-} from "../extensions/zentui/style";
+} from "../extensions/pi-zentui/style";
 
 describe("mergeConfig", () => {
 	it("defaults project refresh polling to 30 seconds and Starship styles", () => {

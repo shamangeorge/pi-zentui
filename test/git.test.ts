@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { emptyGitStatus, parseGitStatusPorcelain } from "../extensions/zentui/git";
+import { emptyGitStatus, parseGitStatusPorcelain } from "../extensions/pi-zentui/git";
 
 describe("parseGitStatusPorcelain", () => {
 	it("returns empty status for empty output", () => {

@@ -12,15 +12,15 @@ import {
 	type ExtensionStatusPlacement,
 	type PolishedTuiConfig,
 	defaultConfig,
-} from "../extensions/zentui/config";
-import { installFooter } from "../extensions/zentui/footer";
-import { emptyGitStatus } from "../extensions/zentui/git";
-import zentui from "../extensions/zentui/index";
-import { patchSelectorBorderStyle } from "../extensions/zentui/selector-border";
-import { registerZentuiSettingsCommand } from "../extensions/zentui/settings-command";
-import { createInitialState } from "../extensions/zentui/state";
-import { PolishedEditor, WrappedPolishedEditor } from "../extensions/zentui/ui";
-import { installUserMessageStyle } from "../extensions/zentui/user-message";
+} from "../extensions/pi-zentui/config";
+import { installFooter } from "../extensions/pi-zentui/footer";
+import { emptyGitStatus } from "../extensions/pi-zentui/git";
+import zentui from "../extensions/pi-zentui/index";
+import { patchSelectorBorderStyle } from "../extensions/pi-zentui/selector-border";
+import { registerZentuiSettingsCommand } from "../extensions/pi-zentui/settings-command";
+import { createInitialState } from "../extensions/pi-zentui/state";
+import { PolishedEditor, WrappedPolishedEditor } from "../extensions/pi-zentui/ui";
+import { installUserMessageStyle } from "../extensions/pi-zentui/user-message";
 
 type Handler = (event: unknown, ctx: unknown) => unknown | Promise<unknown>;
 type FooterFactory = (...args: unknown[]) => {
@@ -289,9 +289,9 @@ describe("Pi docs compliance", () => {
 	it("uses the current @earendil-works Pi packages instead of the old @mariozechner scope", () => {
 		const files = [
 			"package.json",
-			"extensions/zentui/config.ts",
-			"extensions/zentui/index.ts",
-			"extensions/zentui/ui.ts",
+			"extensions/pi-zentui/config.ts",
+			"extensions/pi-zentui/index.ts",
+			"extensions/pi-zentui/ui.ts",
 		];
 		const content = files.map((file) => readFileSync(join(process.cwd(), file), "utf8")).join("\n");
 

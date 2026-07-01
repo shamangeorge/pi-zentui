@@ -4,7 +4,7 @@ import {
 	buildTokenLabel,
 	formatCount,
 	getUsageTotals,
-} from "../extensions/zentui/format";
+} from "../extensions/pi-zentui/format";
 
 const cacheHitIcon = "󰆼";
 
